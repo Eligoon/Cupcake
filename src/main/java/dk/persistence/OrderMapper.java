@@ -42,6 +42,37 @@ public class OrderMapper {
         }
     }
 
+    public static List<Order> getAllOrders(ConnectionPool connectionPool)
+            throws DatabaseException {
+
+        List<Order> orders = new ArrayList<>();
+
+        String sql = """
+        SELECT order_id, user_id, created_at, status
+        FROM public.orders
+    """;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                orders.add(new Order(
+                        rs.getInt("order_id"),
+                        rs.getInt("user_id"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getString("status")
+                ));
+            }
+
+            return orders;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Error fetching all orders", e.getMessage());
+        }
+    }
+
     public static void markAsPaid(int orderId, ConnectionPool connectionPool)
             throws DatabaseException {
 
