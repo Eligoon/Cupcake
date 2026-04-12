@@ -4,6 +4,8 @@ import dk.entities.User;
 import dk.exceptions.DatabaseException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserMapper {
 
@@ -11,10 +13,10 @@ public class UserMapper {
             throws DatabaseException {
 
         String sql = """
-            SELECT user_id, email, password_hash, role
-            FROM public.users
-            WHERE email = ?
-        """;
+        SELECT user_id, email, password_hash, role
+        FROM public.users
+        WHERE email = ?
+    """;
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -31,7 +33,7 @@ public class UserMapper {
                 );
             }
 
-            return null;
+            throw new DatabaseException("User not found");
 
         } catch (SQLException e) {
             throw new DatabaseException("Error finding user", e.getMessage());
@@ -57,6 +59,37 @@ public class UserMapper {
 
         } catch (SQLException e) {
             throw new DatabaseException("Error creating user", e.getMessage());
+        }
+    }
+
+    public static List<User> getAllUsers(ConnectionPool cp)
+            throws DatabaseException {
+
+        List<User> users = new ArrayList<>();
+
+        String sql = """
+        SELECT user_id, email, password_hash, role
+        FROM public.users
+    """;
+
+        try (Connection connection = cp.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                users.add(new User(
+                        rs.getInt("user_id"),
+                        rs.getString("email"),
+                        rs.getString("password_hash"),
+                        rs.getString("role")
+                ));
+            }
+
+            return users;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Error fetching users", e.getMessage());
         }
     }
 }
