@@ -1,0 +1,22 @@
+@startuml OlskerCupcakes_Domain
+
+title Olsker Cupcakes - Domain Diagram
+
+skinparam arrowColor #555555
+
+class User
+class Account
+class Order
+class CupcakeOrder
+class Cupcake
+class Bottom
+class Topping
+
+User "1" -- "1" Account : has >
+User "1" -- "*" Order : places >
+Order "1" *-- "*" CupcakeOrder : contains >
+CupcakeOrder "*" --> "1" Cupcake : refers to >
+Cupcake "*" --> "1" Bottom : has >
+Cupcake "*" --> "1" Topping : has >
+
+@enduml
