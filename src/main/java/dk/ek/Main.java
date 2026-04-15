@@ -2,6 +2,10 @@ package dk.ek;
 
 import dk.config.SessionConfig;
 import dk.config.ThymeleafConfig;
+import dk.controllers.AuthController;
+import dk.controllers.CartController;
+import dk.controllers.OrderController;
+import dk.controllers.UserController;
 import dk.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -27,5 +31,10 @@ public class Main {
 
 
         // Routing
+        AuthController.addRoutes(javApp, connectionPool);
+        CartController.addRoutes(javApp, connectionPool);
+        OrderController.addRoutes(javApp, connectionPool);
+        UserController.addRoutes(javApp, connectionPool);
+
     }
 }
