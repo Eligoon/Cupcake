@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- nav -->
 <nav class="navbar">
     <a class="navbar-brand" th:href="@{/}">
         <img th:src="@{/images/logo.png}" alt="Olsker Cupcakes logo" class="navbar-logo">
@@ -34,7 +34,7 @@
 
 <div class="auth-page">
 
-    <!-- Register card — wider, no photo on this page per mockup -->
+    <!-- register cards -->
     <div class="auth-card" style="max-width: 820px; margin: 0 auto;">
 
         <div class="auth-brand">
@@ -42,7 +42,7 @@
             <span>Olsker<br>Cupcakes</span>
         </div>
 
-        <!-- Mascot (top right of card) -->
+        <!-- mascot -->
         <div class="auth-mascot">
             <img th:src="@{/images/mascot-pink.png}" alt="Cupcake mascot">
         </div>
@@ -50,7 +50,7 @@
         <p class="auth-welcome">Velkommen!</p>
         <h1 class="auth-title">Opret ny bruger</h1>
 
-        <!-- Error message -->
+        <!-- erro message -->
         <div class="error-message" th:if="${message}" th:text="${message}"></div>
 
         <form class="auth-form" method="post" th:action="@{/register}" id="registerForm">
@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    // Client-side validation: email and password must match
+    // email and confirm + password and confirm must match
     document.getElementById('registerForm').addEventListener('submit', function(e) {
         const email = document.getElementById('email').value;
         const confirmEmail = document.getElementById('confirmEmail').value;
