@@ -13,10 +13,10 @@ public class UserMapper {
             throws DatabaseException {
 
         String sql = """
-        SELECT user_id, email, password_hash, role
-        FROM public.users
-        WHERE email = ?
-    """;
+            SELECT user_id, email, password_hash, role, first_name, last_name
+            FROM public.users
+            WHERE email = ?
+        """;
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -46,8 +46,8 @@ public class UserMapper {
             throws DatabaseException {
 
         String sql = """
-            INSERT INTO public.users (email, password_hash, role)
-            VALUES (?, ?, ?)
+            INSERT INTO public.users (email, password_hash, role, first_name, last_name)
+            VALUES (?, ?, ?, ?, ?)
         """;
 
         try (Connection connection = connectionPool.getConnection();
@@ -56,6 +56,8 @@ public class UserMapper {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPasswordHash());
             ps.setString(3, user.getRole());
+            ps.setString(4, user.getFirstName());
+            ps.setString(5, user.getLastName());
 
             ps.executeUpdate();
 
@@ -70,9 +72,9 @@ public class UserMapper {
         List<User> users = new ArrayList<>();
 
         String sql = """
-        SELECT user_id, email, password_hash, role
-        FROM public.users
-    """;
+            SELECT user_id, email, password_hash, role, first_name, last_name
+            FROM public.users
+        """;
 
         try (Connection connection = cp.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
