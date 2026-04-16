@@ -16,7 +16,7 @@ public class ToppingMapper {
     public static List<Topping> getAllToppings(ConnectionPool cp) throws DatabaseException {
         List<Topping> toppings = new ArrayList<>();
 
-        String sql = "SELECT * FROM toppings";
+        String sql = "SELECT topping_id, name, price FROM public.toppings";
 
         try (Connection conn = cp.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
