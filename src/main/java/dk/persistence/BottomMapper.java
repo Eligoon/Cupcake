@@ -15,7 +15,7 @@ public class BottomMapper {
     public static List<Bottom> getAllBottoms(ConnectionPool cp) throws DatabaseException {
         List<Bottom> bottoms = new ArrayList<>();
 
-        String sql = "SELECT * FROM bottoms";
+        String sql = "SELECT bottom_id, name, price FROM public.bottoms";
 
         try (Connection conn = cp.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
