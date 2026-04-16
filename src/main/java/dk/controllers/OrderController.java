@@ -1,11 +1,18 @@
 package dk.controllers;
 
+import dk.entities.CupcakeOrders;
+import dk.entities.Order;
 import dk.entities.User;
+import dk.exceptions.DatabaseException;
 import dk.persistence.ConnectionPool;
+import dk.persistence.CupcakeOrdersMapper;
+import dk.persistence.OrderMapper;
 import dk.services.CartService;
 import dk.services.OrderService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.util.List;
 
 public class OrderController {
 
@@ -30,7 +37,23 @@ public class OrderController {
             return;
         }
 
-        ctx.render("orders.html");
+        try {
+            List<Order> orders = OrderMapper.getOrdersByUser(user.getUserId(), cp);
+            for (Order order : orders) {
+                List<CupcakeOrders> lines = CupcakeOrdersMapper.getOrdersByOrderId(order.getOrderId(), cp);
+                order.setLines(lines);
+                double total = lines.stream()
+                        .mapToDouble(l -> l.getUnitPrice() * l.getQuantity())
+                        .sum();
+
+                order.setTotal(total);
+            }
+            ctx.attribute("orders", orders);
+            ctx.render("admin/orders.html");
+        } catch (DatabaseException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("admin/orders.html");
+        }
     }
 
     // US-4
@@ -42,7 +65,7 @@ public class OrderController {
             ctx.attribute("cartItems", CartService.getCart(orderId, cp));
             ctx.attribute("total", CartService.calculateTotal(orderId, cp));
 
-            ctx.render("cart.html");
+            ctx.render("checkout.html");
 
         } catch (Exception e) {
             ctx.status(500).result("Error loading cart: " + e.getMessage());
