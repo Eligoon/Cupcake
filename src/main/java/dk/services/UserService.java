@@ -26,9 +26,7 @@ public class UserService {
                 0,
                 email,
                 hashedPassword,
-                role,
-                firstName,
-                lastName
+                role
         );
 
         // 3. insert user
