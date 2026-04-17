@@ -12,8 +12,6 @@ public class UserController {
         app.get("/register", ctx -> ctx.render("register.html"));
 
         app.post("/register", ctx -> register(ctx, cp));
-
-        app.get("/logout", ctx-> logout(ctx));
     }
 
     private static void register(Context ctx, ConnectionPool cp) {
