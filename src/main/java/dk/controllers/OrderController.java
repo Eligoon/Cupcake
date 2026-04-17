@@ -99,6 +99,8 @@ public class OrderController {
         try {
             OrderService.payOrder(orderId, user.getUserId(), total, cp);
 
+            ctx.req().getSession().removeAttribute("currentOrderId");
+
             ctx.redirect("/orders");
 
         } catch (Exception e) {
