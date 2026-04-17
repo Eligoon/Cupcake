@@ -48,7 +48,7 @@ Users can build custom cupcakes, manage a cart, place orders as well as view ord
 ### 1. Clone repository
 
 ```
-git clone https://github.com/Eligoon/Cupcake.git
+git clone https://github.com/Eligoon/CupcakeTeamE.git
 ```
 
 ### 2. Run the application
