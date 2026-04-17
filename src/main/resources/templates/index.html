@@ -111,8 +111,7 @@
 
         <!-- add to cart -->
         <form method="post" th:action="@{/cart/add}" style="text-align:center">
-            <input type="hidden" name="bottomId" id="hiddenBottom">
-            <input type="hidden" name="toppingId" id="hiddenTopping">
+            <input type="hidden" name="cupcakeId" id="hiddenCupcake">
             <input type="hidden" name="quantity" id="hiddenQty" value="0">
             <button type="submit" class="add-to-cart-btn">
                 <img th:src="@{/images/cart.png}" alt=""> Læg i kurv
@@ -155,7 +154,9 @@
     </div>
 </div>
 
-<script>
+<script th:inline="javascript">
+    const cupcakes = /*[[${cupcakes}]]*/ [];
+
     let qty = 0;
 
     function changeQty(delta) {
@@ -175,20 +176,27 @@
         const bottomPrice  = parseFloat(bottomOpt?.dataset?.price) || 0;
         const toppingPrice = parseFloat(toppingOpt?.dataset?.price) || 0;
 
-        document.getElementById('hiddenBottom').value  = bottomSel.value;
-        document.getElementById('hiddenTopping').value = toppingSel.value;
-
         if (bottomPrice > 0 && toppingPrice > 0) {
             const unit  = bottomPrice + toppingPrice;
             const total = unit * qty;
             document.getElementById('priceDisplay').textContent =
                 unit.toFixed(2).replace('.', ',') + ' kr' + (qty > 1 ? ' × ' + qty + ' = ' + total.toFixed(2).replace('.', ',') + ' kr' : '');
             document.getElementById('priceDesc').textContent =
-                bottomOpt.text.split(' —')[0] + ' + ' + toppingOpt.text.split(' —')[0];
+                bottomOpt.text.split(' -')[0] + ' + ' + toppingOpt.text.split(' -')[0];
         } else {
             document.getElementById('priceDisplay').textContent = '− kr';
             document.getElementById('priceDesc').textContent = 'Vælg bund og topping';
         }
+
+        const cupcakeId = findCupcakeId(bottomSel.value, toppingSel.value);
+        document.getElementById('hiddenCupcake').value = cupcakeId || "";
+    }
+
+    function findCupcakeId(bottomId, toppingId) {
+        const match = cupcakes.find(c =>
+        c.bottomId == bottomId && c.toppingId == toppingId
+        );
+        return match ? match.cupcakeId : null;
     }
 </script>
 
