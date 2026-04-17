@@ -16,7 +16,7 @@ public class UserService {
         String hashedPassword = PasswordHasher.hash(password);
 
         // 2. create user
-        User user = new User(0, email, hashedPassword, role, null, null);
+        User user = new User(0, email, hashedPassword, role);
         UserMapper.createUser(user, cp);
 
         // 3. fetch created user (to get ID)
