@@ -13,10 +13,10 @@ public class UserMapper {
             throws DatabaseException {
 
         String sql = """
-            SELECT user_id, email, password_hash, role
-            FROM public.users
-            WHERE email = ?
-        """;
+        SELECT user_id, email, password_hash, role
+        FROM public.users
+        WHERE email = ?
+    """;
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -68,9 +68,9 @@ public class UserMapper {
         List<User> users = new ArrayList<>();
 
         String sql = """
-            SELECT user_id, email, password_hash, role
-            FROM public.users
-        """;
+        SELECT user_id, email, password_hash, role
+        FROM public.users
+    """;
 
         try (Connection connection = cp.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
